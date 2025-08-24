@@ -48,21 +48,16 @@ export default function OfframpWidget() {
         throw new Error('Please enter a valid amount');
       }
 
-      // Call Request Finance API
-      const response = await fetch('https://core-api.pay.so/v1/conversions', {
+      // Call our API route (which proxies to Request Finance API)
+      const response = await fetch('/api/quote', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 708e2859c05c4ca6bf8a5b29d555320c',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          conversion: {
-            input_currency: fromCurrency,
-            input_amount: numericAmount,
-            output_currency: toCurrency,
-            output_amount: null,
-            mode: 'sending'
-          }
+          input_currency: fromCurrency,
+          input_amount: numericAmount,
+          output_currency: toCurrency
         })
       });
 
