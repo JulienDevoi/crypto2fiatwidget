@@ -8,6 +8,10 @@ export default function WidgetLayout({
       <head>
         <style dangerouslySetInnerHTML={{
           __html: `
+            :root {
+              --background: transparent !important;
+              --foreground: #171717;
+            }
             html, body {
               margin: 0 !important;
               padding: 0 !important;
@@ -21,6 +25,9 @@ export default function WidgetLayout({
             * {
               box-sizing: border-box !important;
             }
+            .bg-transparent {
+              background: transparent !important;
+            }
           `
         }} />
       </head>
@@ -32,7 +39,7 @@ export default function WidgetLayout({
         WebkitAppearance: 'none',
         MozAppearance: 'none',
         appearance: 'none'
-      }}>
+      }} className="bg-transparent">
         {children}
       </body>
     </html>
