@@ -133,7 +133,7 @@ export default function OfframpWidget() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+    <div className="w-full max-w-md mx-auto p-6">
       {/* Header */}
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-1">
