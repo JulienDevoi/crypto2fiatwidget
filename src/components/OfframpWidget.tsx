@@ -21,6 +21,18 @@ const FIAT_OPTIONS = [
   { value: 'sgd', label: 'SGD (Singapore Dollar)', symbol: 'S$' },
   { value: 'chf', label: 'CHF (Swiss Franc)', symbol: 'CHF' },
   { value: 'gbp', label: 'GBP (British Pound)', symbol: '£' },
+  { value: 'aud', label: 'AUD (Australian Dollar)', symbol: 'A$' },
+  { value: 'nzd', label: 'NZD (New Zealand Dollar)', symbol: 'NZ$' },
+  { value: 'thb', label: 'THB (Thai Baht)', symbol: '฿' },
+  { value: 'hkd', label: 'HKD (Hong Kong Dollar)', symbol: 'HK$' },
+  { value: 'idr', label: 'IDR (Indonesian Rupiah)', symbol: 'Rp' },
+  { value: 'cad', label: 'CAD (Canadian Dollar)', symbol: 'C$' },
+  { value: 'inr', label: 'INR (Indian Rupee)', symbol: '₹' },
+  { value: 'aed', label: 'AED (UAE Dirham)', symbol: 'د.إ' },
+  { value: 'krw', label: 'KRW (South Korean Won)', symbol: '₩' },
+  { value: 'jpy', label: 'JPY (Japanese Yen)', symbol: '¥' },
+  { value: 'myr', label: 'MYR (Malaysian Ringgit)', symbol: 'RM' },
+  { value: 'php', label: 'PHP (Philippine Peso)', symbol: '₱' },
 ];
 
 export default function OfframpWidget() {
