@@ -31,9 +31,39 @@ export default function OfframpWidget() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
+  // Helper function to format numbers with commas
+  const formatNumber = (num: number, isRate: boolean = false) => {
+    return num.toLocaleString('en-US', { 
+      minimumFractionDigits: isRate ? 4 : 2, 
+      maximumFractionDigits: isRate ? 6 : 2 
+    });
+  };
+
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9.,]/g, '');
-    setAmount(value);
+    // Remove all non-numeric characters except decimal points
+    const cleanValue = e.target.value.replace(/[^0-9.]/g, '');
+    
+    // Handle decimal points - only allow one
+    const parts = cleanValue.split('.');
+    let formattedValue = parts[0];
+    
+    // Add commas to the integer part
+    if (formattedValue) {
+      formattedValue = parseInt(formattedValue).toLocaleString('en-US');
+    }
+    
+    // Add decimal part back if it exists
+    if (parts.length > 1) {
+      formattedValue += '.' + parts[1];
+    }
+    
+    setAmount(formattedValue);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !isLoading) {
+      getQuote();
+    }
   };
 
   const getQuote = async () => {
@@ -95,7 +125,7 @@ export default function OfframpWidget() {
       {/* Header */}
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-1">
-          Amount to offramp
+          I need to pay/send...
         </h2>
       </div>
 
@@ -105,6 +135,7 @@ export default function OfframpWidget() {
           type="text"
           value={amount}
           onChange={handleAmountChange}
+          onKeyDown={handleKeyDown}
           className="w-full text-3xl font-light text-gray-700 bg-transparent border-none outline-none placeholder-gray-400"
           placeholder="0"
         />
@@ -151,7 +182,7 @@ export default function OfframpWidget() {
       <button
         onClick={getQuote}
         disabled={isLoading}
-        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-4 px-6 rounded-xl transition-colors duration-200 mb-4"
+        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-4 px-6 rounded-xl transition-colors duration-200 mb-4 cursor-pointer disabled:cursor-not-allowed"
       >
         {isLoading ? (
           <div className="flex items-center justify-center">
@@ -175,31 +206,22 @@ export default function OfframpWidget() {
         <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
           <div className="text-center">
             <p className="text-sm text-gray-600 mb-1">You will receive</p>
-            <p className="text-2xl font-semibold text-gray-800">
+            <p className="text-2xl font-semibold text-gray-800 break-all overflow-hidden">
               {FIAT_OPTIONS.find(f => f.value === quote.toCurrency.toLowerCase())?.symbol}
-              {quote.toAmount.toLocaleString('en-US', { 
-                minimumFractionDigits: 2, 
-                maximumFractionDigits: 2 
-              })}
+              {formatNumber(quote.toAmount)}
             </p>
             
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-gray-500 mt-2 break-all">
               Rate: 1 {quote.fromCurrency} = {FIAT_OPTIONS.find(f => f.value === quote.toCurrency.toLowerCase())?.symbol}
-              {quote.rate.toLocaleString('en-US', { 
-                minimumFractionDigits: 2, 
-                maximumFractionDigits: 2 
-              })} {quote.toCurrency}
+              {formatNumber(quote.rate, true)} {quote.toCurrency}
             </p>
             
             {/* Fees Display */}
             <div className="mt-3 pt-3 border-t border-gray-200">
               <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-600">Service fees:</span>
-                <span className="text-gray-800 font-medium">
-                  {quote.fees.toLocaleString('en-US', { 
-                    minimumFractionDigits: 2, 
-                    maximumFractionDigits: 2 
-                  })} {quote.fromCurrency}
+                <span className="text-gray-600 flex-shrink-0">Service fees:</span>
+                <span className="text-gray-800 font-medium break-all text-right">
+                  {formatNumber(quote.fees)} {quote.fromCurrency}
                 </span>
               </div>
             </div>
