@@ -196,11 +196,10 @@ export default function OfframpWidget() {
               <div className="flex justify-between items-center text-sm">
                 <span className="text-gray-600">Service fees:</span>
                 <span className="text-gray-800 font-medium">
-                  {FIAT_OPTIONS.find(f => f.value === quote.toCurrency.toLowerCase())?.symbol}
                   {quote.fees.toLocaleString('en-US', { 
                     minimumFractionDigits: 2, 
                     maximumFractionDigits: 2 
-                  })}
+                  })} {quote.fromCurrency}
                 </span>
               </div>
             </div>
